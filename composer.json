@@ -1,0 +1,27 @@
+{
+  "name": "alison4kk/items",
+  "description": "Items - Hybrid array manipulation utility for PHP 7.4+ and PHP 8",
+  "license": "MIT",
+  "type": "library",
+  "require": {
+    "php": "^7.4 || ^8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "Items\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Items\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit --colors=always tests"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
