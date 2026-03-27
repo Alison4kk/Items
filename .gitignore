@@ -1,0 +1,23 @@
+# Dependencies
+/vendor/
+
+# Composer
+/composer.phar
+
+# PHPUnit
+.phpunit.result.cache
+
+# Coverage
+/coverage/
+*.coverage
+
+# Logs
+*.log
+
+# IDEs
+/.idea/
+/.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
