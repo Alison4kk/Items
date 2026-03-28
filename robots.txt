@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /node_modules/
+Disallow: /.vitepress/
+
+# Sitemap
+Sitemap: https://alison4kk.github.io/Items/sitemap.xml
