@@ -1,3 +1,12 @@
+---
+title: Aggregate - Count Sum Average Min Max Arrays
+description: Calculate aggregate values from arrays. Count, sum, average, min, max operations on array items in PHP.
+head:
+  - - meta
+    - name: keywords
+      content: "count array items, sum array values, average array, min max array, aggregate functions, array statistics"
+---
+
 # Aggregate - Aggregation Operations
 
 Operations that calculate values from all items.

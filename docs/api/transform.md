@@ -1,3 +1,12 @@
+---
+title: Transform - Transform Array Keys and Values
+description: Transform array key-value structures in PHP. Map keys and create key-value pairs from array fields.
+head:
+  - - meta
+    - name: keywords
+      content: "transform arrays, key-value mapping, map keys, transform data structure, array transformation"
+---
+
 # Transform - Transform Keys and Values
 
 Operations to transform the key-value structure of data.

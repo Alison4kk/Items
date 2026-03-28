@@ -1,3 +1,12 @@
+---
+title: Installation - Items PHP Library
+description: Install Items with Composer. Quick setup for PHP 7.4+ array manipulation library with zero dependencies.
+head:
+  - - meta
+    - name: keywords
+      content: "install items, PHP package, composer, array library installation"
+---
+
 # Installation
 
 ## Via Composer (Recommended)

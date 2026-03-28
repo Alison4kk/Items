@@ -1,10 +1,22 @@
 ---
 layout: home
+title: Items - PHP Array Manipulation Library
+description: Powerful PHP library for manipulating arrays and objects. Filter, sort, map, group arrays with static API or fluent interface. Array handler tool for PHP developers.
+head:
+  - - meta
+    - name: keywords
+      content: "array manipulation, PHP library, array handler, filter arrays, sort arrays, map arrays, nested data, array utility"
+  - - meta
+    - property: og:title
+      content: "Items - PHP Array & Object Manipulation Library"
+  - - meta
+    - property: og:description
+      content: "Lightweight PHP library for manipulating arrays and objects. Filter, sort, map, group arrays with ease."
 
 hero:
   name: "Items"
-  text: "Hybrid PHP library for array and object manipulation"
-  tagline: "Same methods. Multiple ways. Choose yours."
+  text: "PHP Array & Object Manipulation Library"
+  tagline: "Filter, sort, map, and manipulate arrays of items with ease. Static API, in-place, or fluent interface."
   image:
     src: /logo.svg
     alt: Items

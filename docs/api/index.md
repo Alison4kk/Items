@@ -1,3 +1,12 @@
+---
+title: API Reference - Complete Array Operations
+description: Full API documentation for Items library. Filter, sort, map, group, count, and transform arrays with code examples.
+head:
+  - - meta
+    - name: keywords
+      content: "API documentation, array operations, PHP functions reference, filter sort map group"
+---
+
 # Index - Create Indexed Map
 
 Create an associative array indexed by a field or function result.

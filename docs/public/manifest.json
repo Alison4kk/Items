@@ -1,0 +1,34 @@
+{
+  "name": "Items - PHP Array Manipulation Library",
+  "short_name": "Items",
+  "description": "Powerful PHP library for array and object manipulation. Filter, sort, map, group arrays with ease.",
+  "start_url": "/Items/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/Items/",
+  "icons": [
+    {
+      "src": "/Items/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/Items/logo.svg",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "keywords": ["array", "manipulation", "PHP", "library", "tool"],
+  "author": {
+    "name": "Alison",
+    "url": "https://github.com/alison4kk"
+  },
+  "homepage_url": "https://github.com/alison4kk/items"
+}

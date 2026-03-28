@@ -1,3 +1,12 @@
+---
+title: Documentation - Items PHP Array Library
+description: Complete guide to Items PHP library. Learn array manipulation techniques, filtering arrays, sorting, mapping, grouping with code examples.
+head:
+  - - meta
+    - name: keywords
+      content: "array manipulation, PHP tutorial, filter arrays, sort arrays, group arrays, nested data access, array operations"
+---
+
 # Introduction
 
 Welcome to **Items** - a hybrid PHP library for manipulating arrays and objects with flexibility and simplicity.

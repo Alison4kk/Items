@@ -1,3 +1,12 @@
+---
+title: Path - Dot Notation for Nested Array Access
+description: Access and modify nested array data using dot notation in PHP. Get and set values in deeply nested structures easily.
+head:
+  - - meta
+    - name: keywords
+      content: "dot notation, nested arrays, nested objects, access nested data, array paths, nested data structures"
+---
+
 # Path - Dot Notation for Nested Data
 
 Access and modify nested data using dot notation.

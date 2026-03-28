@@ -1,3 +1,12 @@
+---
+title: Quick Start - Array Manipulation Examples
+description: Get started with Items PHP library. Learn by example how to filter, sort, map and manipulate arrays of items with different API styles.
+head:
+  - - meta
+    - name: keywords
+      content: "filter arrays, sort arrays, map arrays, PHP examples, array manipulation examples, fluent API, static API"
+---
+
 # Quick Start
 
 ## Basic Example

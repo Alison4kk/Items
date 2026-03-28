@@ -1,3 +1,12 @@
+---
+title: Group - Group Arrays of Items by Field
+description: Group arrays of items by field value or custom logic in PHP. Create array of arrays grouped by key. Static and fluent APIs supported.
+head:
+  - - meta
+    - name: keywords
+      content: "group arrays, grouping items, group by field, array grouping, PHP grouping, organize array data"
+---
+
 # Group - Group Items
 
 Group items based on a field or custom logic.

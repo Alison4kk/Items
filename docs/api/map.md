@@ -1,3 +1,12 @@
+---
+title: Map - Transform Array Items in PHP
+description: Transform arrays of items using map function in PHP. Apply callable to each array element. Static immutable or fluent API.
+head:
+  - - meta
+    - name: keywords
+      content: "map arrays, array transformation, PHP map, transform items, callback function, array manipulation"
+---
+
 # Map - Transform Items
 
 Transform your data by applying a function to each item.

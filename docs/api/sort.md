@@ -1,3 +1,12 @@
+---
+title: Sort - Sort Arrays by Field or Logic
+description: Sort arrays of items in PHP by field value or custom comparator. Support for ascending/descending order with static or fluent APIs.
+head:
+  - - meta
+    - name: keywords
+      content: "sort arrays, array sorting, PHP sort, sort by field, custom sorting, ascending descending"
+---
+
 # Sort - Sort Items
 
 Sort your data by field or custom logic.

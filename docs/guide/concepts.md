@@ -1,4 +1,13 @@
-# Concepts
+---
+title: Concepts - Three APIs for Array Manipulation
+description: Learn the three different API styles for manipulating arrays with Items. Static immutable, in-place, and fluent interfaces explained.
+head:
+  - - meta
+    - name: keywords
+      content: "array manipulation concepts, fluent interface, static API, immutable arrays, in-place modification, PHP arrays"
+---
+
+# Concepts - Array Manipulation APIs
 
 ## Three APIs, One Logic
 

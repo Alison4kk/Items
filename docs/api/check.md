@@ -1,3 +1,12 @@
+---
+title: Check - Verify Array Conditions
+description: Check if array items satisfy conditions. Every, some, contains methods. Test array conditions in PHP.
+head:
+  - - meta
+    - name: keywords
+      content: "check conditions, verify array, every some contains, test array, array conditions, validate items"
+---
+
 # Check - Verify Conditions
 
 Test if items satisfy certain conditions.

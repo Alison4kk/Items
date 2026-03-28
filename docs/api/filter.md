@@ -1,3 +1,12 @@
+---
+title: Filter - Filter Arrays by Conditions
+description: Learn how to filter arrays of items by conditions in PHP. Use ItemsFilter with static or fluent APIs. Support for operators, callables, and dot notation.
+head:
+  - - meta
+    - name: keywords
+      content: "filter arrays, array filtering, PHP filter function, filter items, conditional filtering, array conditions"
+---
+
 # Filter - Filter Items
 
 Find and return only items that match your conditions.

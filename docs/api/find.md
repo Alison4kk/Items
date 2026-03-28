@@ -1,3 +1,12 @@
+---
+title: Find - Find First and Last Items in Arrays
+description: Find first or last item in array matching condition in PHP. Search arrays by field values or custom logic.
+head:
+  - - meta
+    - name: keywords
+      content: "find item, search array, first item, last item, array search, find elements"
+---
+
 # Find - Find Items
 
 Find the first or last item that matches a condition.

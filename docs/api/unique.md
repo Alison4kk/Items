@@ -1,3 +1,12 @@
+---
+title: Unique - Remove Duplicates from Arrays
+description: Remove duplicate items from arrays in PHP. Deduplicate by field value or custom logic.
+head:
+  - - meta
+    - name: keywords
+      content: "remove duplicates, deduplicate array, unique items, array deduplication, remove duplicate records"
+---
+
 # Unique - Remove Duplicates
 
 Remove duplicate items based on a field or custom logic.
