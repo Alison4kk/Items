@@ -65,7 +65,7 @@ Items::filter($users, ['active' => true]);
 
 ### Fluent API (Chainable)
 ```php
-$result = (new ItemsArray($users))
+$result = (new ItemBag($users))
     ->filter(['active' => true])
     ->sorted('age', 'asc')
     ->mapped(fn($u) => ['name' => $u['name']]);
@@ -81,7 +81,7 @@ composer require alison4kk/items
 ### Basic Usage
 ```php
 use Items\Items;
-use Items\ItemsArray;
+use Items\ItemBag;
 
 $users = [
     ['id' => 1, 'name' => 'Alice', 'city' => 'São Paulo', 'age' => 28, 'active' => true],
@@ -91,7 +91,7 @@ $users = [
 // Choose your style!
 $filtered = Items::filtered($users, ['active' => true]);
 // or
-(new ItemsArray($users))->filter(['active' => true])->get();
+ItemBag::from($users)->filter(['active' => true])->all();
 ```
 
 Read the [complete documentation](/guide/) to explore all features.

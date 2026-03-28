@@ -56,7 +56,7 @@ $mapped = Items::mapKeys($data, fn($key) =>
 
 ### Example 3: Fluent API
 ```php
-$result = (new ItemsArray($users))
+$result = (new ItemBag($users))
     ->keyValue('id', 'name');
 ```
 

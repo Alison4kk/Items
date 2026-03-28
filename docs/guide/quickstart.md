@@ -16,7 +16,7 @@ head:
 require 'vendor/autoload.php';
 
 use Items\Items;
-use Items\ItemsArray;
+use Items\ItemBag;
 
 $users = [
     ['id' => 1, 'name' => 'Alice', 'city' => 'São Paulo', 'age' => 28, 'active' => true],
@@ -58,19 +58,28 @@ Items::map($users, fn($u) => ['name' => $u['name'], 'age' => $u['age']]);
 
 ## Fluent API
 
-Elegant chaining of operations:
+Elegant chaining of in-place operations:
 
 ```php
-$result = (new ItemsArray($users))
+// There are two ways to create a new ItemBag:
+$result = (new ItemBag($users))
     ->filter(['active' => true])
-    ->sorted('age', 'asc')
-    ->mapped(fn($u) => ['name' => $u['name'], 'age' => $u['age']])
-    ->get();
+    ->sort('age', 'asc')
+    ->map(fn($u) => ['name' => $u['name'], 'age' => $u['age']])
+    ->all();
+
+// Or using the static from() method:
+$result = ItemBag::from($users)
+    ->filter(['active' => true])
+    ->sort('age', 'asc')
+    ->map(fn($u) => ['name' => $u['name'], 'age' => $u['age']])
+    ->all();
 
 // Result:
 // [
 //   ['name' => 'Alice', 'age' => 28],
 //   ['name' => 'Charlie', 'age' => 42],
+//   ['name' => 'Diana', 'age' => 31],
 // ]
 ```
 
@@ -82,7 +91,7 @@ $result = (new ItemsArray($users))
 $active = Items::filtered($users, ['active' => true]);
 
 // Fluent
-$active = (new ItemsArray($users))->filter(['active' => true])->get();
+$active = (new ItemBag($users))->filter(['active' => true])->all();
 ```
 
 ### Sort
@@ -91,17 +100,37 @@ $active = (new ItemsArray($users))->filter(['active' => true])->get();
 $sorted = Items::sorted($users, 'age', 'desc');
 
 // Fluent
-$sorted = (new ItemsArray($users))->sorted('age', 'desc')->get();
+$sorted = (new ItemBag($users))->sort('age', 'desc')->all();
 ```
 
 ### Group
 ```php
-// Static
+// Static - returns new array, doesn't modify
 $grouped = Items::grouped($users, 'city');
 // ['São Paulo' => [...], 'Rio' => [...]]
 
+// Fluent - modifies in-place and returns self
+$grouped = ItemBag::from($users)->group('city')->all();
+```
+
+### Index
+```php
+// Static - returns new indexed array
+$indexed = Items::indexed($users, 'id');
+// [1 => [...], 2 => [...], ...]
+
+// Fluent - indexes in-place
+$indexed = ItemBag::from($users)->index('id')->all();
+```
+
+### Column
+```php
+// Static
+$names = Items::column($users, 'name');
+// ['Alice', 'Bob', 'Charlie']
+
 // Fluent
-$grouped = (new ItemsArray($users))->grouped('city')->get();
+$names = (new ItemBag($users))->column('name');
 ```
 
 ### Count
@@ -113,7 +142,7 @@ $count = Items::count($users);
 $activeCount = Items::count($users, ['active' => true]);
 
 // Fluent
-$count = (new ItemsArray($users))->filter(['active' => true])->count();
+$count = (new ItemBag($users))->filter(['active' => true])->count();
 ```
 
 ### Dot notation for nested data

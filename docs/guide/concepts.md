@@ -54,18 +54,27 @@ Items::map(...)
 ### 3. Fluent API
 
 ```php
-(new ItemsArray($data))
+// Using constructor
+(new ItemBag($data))
     ->filter(...)
-    ->sorted(...)
-    ->mapped(...)
-    ->get();
+    ->sort(...)
+    ->map(...)
+    ->all();
+
+// Or using the static from() method
+ItemBag::from($data)
+    ->filter(...)
+    ->sort(...)
+    ->map(...)
+    ->all();
 ```
 
 **Characteristics:**
 - Modern and readable interface
 - Method chaining
-- Immutable by default (returns new instances)
-- Perfect for elegant code
+- In-place modifications (modifies internal state)
+- Returns `$this` for fluent chaining
+- Perfect for elegant, readable code
 
 **When to use:**
 - When you want readable and expressive code

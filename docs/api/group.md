@@ -15,12 +15,20 @@ Group items based on a field or custom logic.
 
 ### Static API
 ```php
+// Immutable - returns new grouped array
 Items::grouped(array $items, string|callable $key, ?string $subKey = null): array
+
+// In-place - modifies the array
+Items::group(array &$items, string|callable $key, ?string $subKey = null): void
 ```
 
 ### Fluent API
 ```php
+// Immutable - returns array
 $collection->grouped(string|callable $key, ?string $subKey = null): array
+
+// In-place - modifies and returns self
+$collection->group(string|callable $key, ?string $subKey = null): ItemBag
 ```
 
 ## Examples
@@ -52,12 +60,12 @@ $grouped = Items::grouped($users, fn($user) =>
 );
 ```
 
-### Example 3: Fluent API
+### Example 3: Fluent API (in-place)
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['active' => true])
-    ->grouped('city')
-    ->get();
+    ->group('city')
+    ->all();
 ```
 
 ## Performance

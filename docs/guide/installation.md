@@ -30,14 +30,14 @@ After installing, verify that everything is working:
 require 'vendor/autoload.php';
 
 use Items\Items;
-use Items\ItemsArray;
+use Items\ItemBag;
 
 // Test with static API
 $data = [['id' => 1, 'name' => 'Alice']];
 $result = Items::mapped($data, fn($item) => $item['name']);
 
 // Test with fluent API
-$result = (new ItemsArray($data))->mapped(fn($item) => $item['name'])->get();
+$result = (new ItemBag($data))->map(fn($item) => $item['name'])->all();
 
 echo "Items installed successfully!";
 ?>

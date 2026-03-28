@@ -269,6 +269,58 @@ class Items
     }
 
     /**
+     * Index array in-place by field/callable.
+     *
+     * @template U
+     * @param array<U> $items
+     * @param string|callable(U): (string|int) $key
+     */
+    public static function index(array &$items, $key): void
+    {
+        $items = self::indexed($items, $key);
+    }
+
+    /**
+     * Group array in-place by field/callable.
+     *
+     * @template U
+     * @param array<U> $items
+     * @param string|callable(U): (string|int) $key
+     * @param string|callable(U): (string|int)|null $subKey
+     */
+    public static function group(array &$items, $key, $subKey = null): void
+    {
+        $items = self::grouped($items, $key, $subKey);
+    }
+
+    /**
+     * Extract a column from items.
+     *
+     * @template U
+     * @param array<U> $items
+     * @param string|callable(U): mixed $key
+     * @return array<mixed>
+     */
+    public static function column(array $items, $key): array
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            if (is_callable($key)) {
+                $value = $key($item);
+            } else {
+                $value = self::getPath($item, (string)$key);
+            }
+
+            if ($value !== null) {
+                $result[] = $value;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Find first item matching condition.
      *
      * @template U

@@ -23,10 +23,9 @@ Items::uniqued(array $items, string|callable $key): array
 Items::unique(array &$items, string|callable $key): void
 ```
 
-### Fluent API
+### Fluent In-Place API
 ```php
-$collection->uniqued(string|callable $key): ItemsArray
-$collection->unique(string|callable $key): ItemsArray
+$collection->unique(string|callable $key): ItemBag
 ```
 
 ## Examples
@@ -49,12 +48,12 @@ $unique = Items::uniqued($users, fn($user) => strtolower($user['email']));
 // Uses the function to generate the uniqueness key
 ```
 
-### Example 3: Fluent API
+### Example 3: Fluent API (in-place)
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['active' => true])
-    ->uniqued('email')
-    ->get();
+    ->unique('email')
+    ->all();
 ```
 
 ## Behavior

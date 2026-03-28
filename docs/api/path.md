@@ -22,8 +22,7 @@ Items::setPath(&$item, string $path, $value): void
 ### Fluent API
 ```php
 $collection->get(string $path, $default = null): mixed
-$collection->set(string $path, $value): ItemsArray
-$collection->with(string $path, $value): ItemsArray
+$collection->set(string $path, $value): ItemBag
 ```
 
 ## What is Dot Notation?
@@ -89,13 +88,13 @@ $result = Items::filtered($data, ['user.age' => 28]);
 
 ### Example 5: Fluent API
 ```php
-$value = (new ItemsArray($data))
+$value = ItemBag::from($data)
     ->get('0.user.name');
 // 'Alice'
 
-$updated = (new ItemsArray($data))
-    ->set('0.user.city', 'Rio')
-    ->with('0.user.country', 'Brazil');
+$updated = ItemBag::from($data)
+    ->set('0.user.city', 'Rio');
+// Sets in-place
 ```
 
 ## Limitations

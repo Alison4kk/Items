@@ -23,10 +23,9 @@ Items::mapped(array $items, callable $mapper): array
 Items::map(array &$items, callable $mapper): void
 ```
 
-### Fluent API
+### Fluent In-Place API
 ```php
-$collection->mapped(callable $mapper): ItemsArray
-$collection->map(callable $mapper): ItemsArray
+$collection->map(callable $mapper): ItemBag
 ```
 
 ## Mapper Function Parameters
@@ -76,27 +75,27 @@ $indexed = Items::mapped($users, fn($user, $key) => [
 // ]
 ```
 
-### Example 4: Fluent API
+### Example 4: Fluent API (in-place)
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['age', '>=', 18])
-    ->mapped(fn($user) => [
+    ->map(fn($user) => [
         'name' => strtoupper($user['name']),
         'age' => $user['age'],
     ])
-    ->get();
+    ->all();
 ```
 
-### Example 5: Chain with other operations
+### Example 5: Chaining with other operations
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['age', '>=', 18])
-    ->sorted('age', 'asc')
-    ->mapped(fn($user) => [
+    ->sort('age', 'asc')
+    ->map(fn($user) => [
         'name' => $user['name'],
         'age' => $user['age'],
     ])
-    ->get();
+    ->all();
 ```
 
 ### Example 6: Complex transformations
@@ -122,7 +121,7 @@ $transformed = Items::mapped($users, fn($user) => [
 
 - **Static Immutable**: New array with transformed items
 - **Static In-Place**: Void (modifies original array)
-- **Fluent**: Returns new ItemsArray instance
+- **Fluent**: Returns self (ItemBag instance) for chaining
 
 ## Performance
 

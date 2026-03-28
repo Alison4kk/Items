@@ -87,7 +87,7 @@ $countByCity = Items::countBy($users, 'city');
 
 ### Example 4: Fluent API
 ```php
-$result = (new ItemsArray($users))
+$result = (new ItemBag($users))
     ->filter(['active' => true])
     ->count();
 // 2

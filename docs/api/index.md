@@ -15,12 +15,17 @@ Create an associative array indexed by a field or function result.
 
 ### Static API
 ```php
+// Immutable - returns new indexed array
 Items::indexed(array $items, string|callable $key): array
+
+// In-place - modifies the array
+Items::index(array &$items, string|callable $key): void
 ```
 
 ### Fluent API
 ```php
-$collection->indexed(string|callable $key): array
+// In-place - modifies and returns self
+$collection->index(string|callable $key): ItemBag
 ```
 
 ## Examples
@@ -53,9 +58,9 @@ $indexed = Items::indexed($users, fn($user) => $user['name']);
 
 ### Example 3: Fluent API
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['active' => true])
-    ->indexed('id');
+    ->index('id');
 ```
 
 ## Performance

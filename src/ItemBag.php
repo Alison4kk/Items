@@ -9,7 +9,7 @@ use Countable;
 /**
  * @template T
  */
-class ItemsArray implements Countable
+class ItemBag implements Countable
 {
     /**
      * @var array<T>
@@ -22,6 +22,18 @@ class ItemsArray implements Countable
     public function __construct(array $items = [])
     {
         $this->items = $items;
+    }
+
+    /**
+     * Create ItemBag from array.
+     *
+     * @template T
+     * @param array<T> $array
+     * @return self<T>
+     */
+    public static function from(array $array): self
+    {
+        return new self($array);
     }
 
     /**
@@ -54,17 +66,6 @@ class ItemsArray implements Countable
     }
 
     /**
-     * Fluent immutable filter for instance usage.
-     *
-     * @param callable|array ...$conditions
-     * @return self<T>
-     */
-    public function filtered(...$conditions): self
-    {
-        return new self(Items::filtered($this->items, ...$conditions));
-    }
-
-    /**
      * Fluent in-place sort for instance usage.
      *
      * @param callable|array ...$criteria
@@ -78,17 +79,6 @@ class ItemsArray implements Countable
     }
 
     /**
-     * Fluent immutable sort for instance usage.
-     *
-     * @param callable|array ...$criteria
-     * @return self<T>
-     */
-    public function sorted(...$criteria): self
-    {
-        return new self(Items::sorted($this->items, ...$criteria));
-    }
-
-    /**
      * @template U
      * @param callable(T, int|string): U $mapper
      * @return $this
@@ -98,19 +88,6 @@ class ItemsArray implements Countable
         Items::map($this->items, $mapper);
 
         return $this;
-    }
-
-    /**
-     * @template U
-     * @param callable(T, int|string): U $mapper
-     * @return self<U>
-     */
-    public function mapped(callable $mapper): self
-    {
-        /** @var self<U> $new */
-        $new = new self(Items::mapped($this->items, $mapper));
-
-        return $new;
     }
 
     /**
@@ -127,37 +104,39 @@ class ItemsArray implements Countable
     }
 
     /**
-     * Fluent immutable unique.
-     *
-     * @param string|callable(T): mixed $key
-     * @return self<T>
-     */
-    public function uniqued($key): self
-    {
-        return new self(Items::uniqued($this->items, $key));
-    }
-
-    /**
-     * Index items by field/callable.
+     * Index items in-place by field/callable.
      *
      * @param string|callable(T): (string|int) $key
-     * @return array<string|int, T>
+     * @return $this
      */
-    public function indexed($key): array
+    public function index($key): self
     {
-        return Items::indexed($this->items, $key);
+        Items::index($this->items, $key);
+        return $this;
     }
 
     /**
-     * Group items by field/callable.
+     * Group items in-place by field/callable.
      *
      * @param string|callable(T): (string|int) $key
      * @param string|callable(T): (string|int)|null $subKey
-     * @return array<string|int, array<T>|array<string|int, array<T>>>
+     * @return $this
      */
-    public function grouped($key, $subKey = null): array
+    public function group($key, $subKey = null): self
     {
-        return Items::grouped($this->items, $key, $subKey);
+        Items::group($this->items, $key, $subKey);
+        return $this;
+    }
+
+    /**
+     * Extract a column from items.
+     *
+     * @param string|callable(T): mixed $key
+     * @return array<mixed>
+     */
+    public function column($key): array
+    {
+        return Items::column($this->items, $key);
     }
 
     /**
@@ -340,20 +319,5 @@ class ItemsArray implements Countable
         Items::setPath($this->items, $path, $value);
 
         return $this;
-    }
-
-    /**
-     * Dot notation setter that returns a new instance.
-     *
-     * @param string $path
-     * @param mixed $value
-     * @return self<T>
-     */
-    public function with(string $path, $value): self
-    {
-        $items = $this->items;
-        Items::setPath($items, $path, $value);
-
-        return new self($items);
     }
 }

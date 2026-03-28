@@ -25,8 +25,8 @@ Items::filter(array &$items, ...$conditions): void
 
 ### Fluent API
 ```php
-$collection->filtered(...$conditions): ItemsArray
-$collection->filter(...$conditions): ItemsArray
+$collection->filtered(...$conditions): ItemBag
+$collection->filter(...$conditions): ItemBag
 ```
 
 ## Supported Conditions
@@ -50,12 +50,11 @@ Items::filtered($users, ['age', '!=', 30]);
 
 // Membership
 Items::filtered($users, ['city', 'IN', ['São Paulo', 'Rio']]);
-Items::filtered($users, ['city', 'NOT IN', ['Salvador']]);
+Items::filtered($users, ['city', '!IN', ['Salvador']]);
 
 // String operations
 Items::filtered($users, ['email', 'CONTAINS', '.com']);
-Items::filtered($users, ['name', 'STARTS_WITH', 'Al']);
-Items::filtered($users, ['name', 'ENDS_WITH', 'ice']);
+Items::filtered($users, ['email', '!CONTAINS', 'gmail']);
 ```
 
 ### Callable
@@ -102,10 +101,10 @@ $result = Items::filtered($users, fn($user) =>
 
 ### Example 5: Fluent API
 ```php
-$result = (new ItemsArray($users))
+$result = (new ItemBag($users))
     ->filter(['active' => true])
     ->filter(['city' => 'São Paulo'])
-    ->get();
+    ->all();
 ```
 
 ### Example 6: Dot notation with nested data
@@ -122,7 +121,7 @@ $active = Items::filtered($data, ['user.profile.active' => true]);
 
 - **Static Immutable**: New array with filtered items
 - **Static In-Place**: Void (modifies original array)
-- **Fluent**: Returns new ItemsArray instance
+- **Fluent**: Returns new ItemBag instance
 
 ## Performance
 

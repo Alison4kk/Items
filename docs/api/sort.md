@@ -25,12 +25,10 @@ Items::sort(array &$items, string $field, string $direction = 'ASC'): void
 Items::sort(array &$items, callable $comparator): void
 ```
 
-### Fluent API
+### Fluent In-Place API
 ```php
-$collection->sorted(string $field, string $direction = 'ASC'): ItemsArray
-$collection->sorted(callable $comparator): ItemsArray
-$collection->sort(string $field, string $direction = 'ASC'): ItemsArray
-$collection->sort(callable $comparator): ItemsArray
+$collection->sort(string $field, string $direction = 'ASC'): ItemBag
+$collection->sort(callable $comparator): ItemBag
 ```
 
 ## Supported Directions
@@ -67,12 +65,12 @@ $sorted = Items::sorted($users, fn($a, $b) =>
 // Sorts by name length
 ```
 
-### Example 4: Fluent API
+### Example 4: Fluent API (in-place)
 ```php
-$result = (new ItemsArray($users))
+$result = ItemBag::from($users)
     ->filter(['age', '>=', 18])
-    ->sorted('age', 'asc')
-    ->get();
+    ->sort('age', 'asc')
+    ->all();
 ```
 
 ### Example 5: Dot notation with nested data
@@ -85,13 +83,13 @@ $data = [
 $sorted = Items::sorted($data, 'user.profile.age', 'asc');
 ```
 
-### Example 6: Multiple sorts
+### Example 6: Chaining multiple operations
 ```php
-// First by city, then by age (chain)
-$result = (new ItemsArray($users))
-    ->sorted('city', 'asc')
-    ->sorted('age', 'asc')
-    ->get();
+// First by city, then by age (in-place)
+$result = ItemBag::from($users)
+    ->sort('city', 'asc')
+    ->sort('age', 'asc')
+    ->all();
 ```
 
 ## Data Types
@@ -106,7 +104,7 @@ Works with:
 
 - **Static Immutable**: New sorted array
 - **Static In-Place**: Void (modifies original array)
-- **Fluent**: Returns new ItemsArray instance
+- **Fluent**: Returns self (ItemBag instance) for chaining
 
 ## Performance
 

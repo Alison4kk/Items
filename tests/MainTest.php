@@ -3,10 +3,10 @@
 namespace Items\Tests;
 
 use Items\Items;
-use Items\ItemsArray;
+use Items\ItemBag;
 use PHPUnit\Framework\TestCase;
 
-class ItemsArrayTest extends TestCase
+class MainTest extends TestCase
 {
     private $users;
 
@@ -22,20 +22,11 @@ class ItemsArrayTest extends TestCase
 
     // ===== Filter Tests =====
 
-    public function testFilteredReturnsNewArray()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items->filtered(['city' => 'São Paulo']);
-        
-        $this->assertInstanceOf(ItemsArray::class, $result);
-        $this->assertCount(2, $result);
-        $this->assertEquals('Alice', $result->all()[0]['name']);
-        $this->assertEquals('Charlie', $result->all()[1]['name']);
-    }
+    
 
     public function testFilterMutatesInstance()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $returned = $items->filter(['city' => 'São Paulo']);
         
         $this->assertSame($items, $returned); // Returns same instance
@@ -43,39 +34,17 @@ class ItemsArrayTest extends TestCase
         $this->assertEquals('Alice', $items->all()[0]['name']);
     }
 
-    public function testFilterMultipleConditions()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items->filtered(['city' => 'São Paulo', 'active' => true]);
-        
-        $this->assertCount(2, $result); // Alice and Charlie
-    }
+    
 
     // ===== Sort Tests =====
 
-    public function testSortedAscending()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items->sorted('age', 'asc');
-        
-        $all = $result->all();
-        $this->assertEquals(28, $all[0]['age']);
-        $this->assertEquals(42, $all[3]['age']);
-    }
+    
 
-    public function testSortedDescending()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items->sorted('age', 'desc');
-        
-        $all = $result->all();
-        $this->assertEquals(42, $all[0]['age']);
-        $this->assertEquals(28, $all[3]['age']);
-    }
+    
 
     public function testSortMutatesInstance()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $returned = $items->sort('age', 'asc');
         
         $this->assertSame($items, $returned);
@@ -84,20 +53,11 @@ class ItemsArrayTest extends TestCase
 
     // ===== Map Tests =====
 
-    public function testMappedTransformsValues()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items->mapped(fn($user) => $user['name']);
-        
-        $all = $result->all();
-        $this->assertCount(4, $all);
-        $this->assertEquals('Alice', $all[0]);
-        $this->assertEquals('Diana', $all[3]);
-    }
+    
 
     public function testMapMutatesInstance()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $returned = $items->map(fn($user) => strtoupper($user['name']));
         
         $this->assertSame($items, $returned);
@@ -106,19 +66,7 @@ class ItemsArrayTest extends TestCase
 
     // ===== Unique Tests =====
 
-    public function testUniquedByKey()
-    {
-        $items = [
-            ['id' => 1, 'city' => 'São Paulo'],
-            ['id' => 2, 'city' => 'Rio'],
-            ['id' => 3, 'city' => 'São Paulo'],
-        ];
-        $result = (new ItemsArray($items))->uniqued('city');
-        
-        $this->assertCount(2, $result);
-        $this->assertEquals('São Paulo', $result->all()[0]['city']);
-        $this->assertEquals('Rio', $result->all()[1]['city']);
-    }
+    
 
     public function testUniqueMutatesInstance()
     {
@@ -127,43 +75,46 @@ class ItemsArrayTest extends TestCase
             ['id' => 2, 'city' => 'Rio'],
             ['id' => 3, 'city' => 'São Paulo'],
         ];
-        $arr = new ItemsArray($items);
+        $arr = new ItemBag($items);
         $returned = $arr->unique('city');
         
         $this->assertSame($arr, $returned);
         $this->assertCount(2, $arr);
     }
 
-    // ===== Indexed Tests =====
+    // ===== Index Tests =====
 
-    public function testIndexedByField()
+    public function testIndexByField()
     {
-        $items = new ItemsArray($this->users);
-        $result = $items->indexed('id');
-        
-        $this->assertIsArray($result);
-        $this->assertTrue(isset($result[1])); // Key 1 => Alice's data
-        $this->assertEquals('Alice', $result[1]['name']);
+        $items = new ItemBag($this->users);
+        $result = $items->index('id');
+
+        $this->assertSame($items, $result); // Returns same instance
+        $data = $items->all();
+        $this->assertTrue(isset($data[1])); // Key 1 => Alice's data
+        $this->assertEquals('Alice', $data[1]['name']);
     }
 
-    // ===== Grouped Tests =====
+    // ===== Group Tests =====
 
-    public function testGroupedByField()
+    public function testGroupByField()
     {
-        $items = new ItemsArray($this->users);
-        $result = $items->grouped('city');
-        
-        $this->assertIsArray($result);
-        $this->assertCount(2, $result['São Paulo']);
-        $this->assertCount(1, $result['Rio']);
-        $this->assertCount(1, $result['Belo Horizonte']);
+        $items = new ItemBag($this->users);
+        $result = $items->group('city');
+
+        $this->assertSame($items, $result); // Returns same instance
+        $data = $items->all();
+        $this->assertIsArray($data);
+        $this->assertCount(2, $data['São Paulo']);
+        $this->assertCount(1, $data['Rio']);
+        $this->assertCount(1, $data['Belo Horizonte']);
     }
 
     // ===== Find Tests =====
 
     public function testFirstWithCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->first(['city' => 'São Paulo']);
         
         $this->assertIsArray($result);
@@ -172,7 +123,7 @@ class ItemsArrayTest extends TestCase
 
     public function testFirstWithoutCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->first();
         
         $this->assertIsArray($result);
@@ -181,7 +132,7 @@ class ItemsArrayTest extends TestCase
 
     public function testFirstWithCallable()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->first(fn($user) => $user['age'] > 40);
         
         $this->assertIsArray($result);
@@ -190,7 +141,7 @@ class ItemsArrayTest extends TestCase
 
     public function testLastWithCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->last(['city' => 'São Paulo']);
         
         $this->assertIsArray($result);
@@ -199,7 +150,7 @@ class ItemsArrayTest extends TestCase
 
     public function testLastWithoutCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->last();
         
         $this->assertIsArray($result);
@@ -210,7 +161,7 @@ class ItemsArrayTest extends TestCase
 
     public function testEveryReturnsTrueWhenAllMatch()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->every(fn($user) => isset($user['name']));
         
         $this->assertTrue($result);
@@ -218,7 +169,7 @@ class ItemsArrayTest extends TestCase
 
     public function testEveryReturnsFalseWhenSomeFail()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->every(['active' => true]);
         
         $this->assertFalse($result); // Bob is inactive
@@ -226,7 +177,7 @@ class ItemsArrayTest extends TestCase
 
     public function testSomeReturnsTrueWhenAnyMatch()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->some(['city' => 'Rio']);
         
         $this->assertTrue($result);
@@ -234,7 +185,7 @@ class ItemsArrayTest extends TestCase
 
     public function testSomeReturnsFalseWhenNoneMatch()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->some(['city' => 'Brasília']);
         
         $this->assertFalse($result);
@@ -244,7 +195,7 @@ class ItemsArrayTest extends TestCase
 
     public function testCountWithoutCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->count();
         
         $this->assertEquals(4, $result);
@@ -252,7 +203,7 @@ class ItemsArrayTest extends TestCase
 
     public function testCountWithCondition()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->count(['active' => true]);
         
         $this->assertEquals(3, $result); // Alice, Charlie, Diana
@@ -262,7 +213,7 @@ class ItemsArrayTest extends TestCase
 
     public function testContainsReturnsTrueWhenExists()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->contains(['name' => 'Alice']);
         
         $this->assertTrue($result);
@@ -270,7 +221,7 @@ class ItemsArrayTest extends TestCase
 
     public function testContainsReturnsFalseWhenNotExists()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->contains(['name' => 'Eve']);
         
         $this->assertFalse($result);
@@ -280,7 +231,7 @@ class ItemsArrayTest extends TestCase
 
     public function testSum()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->sum('age');
         
         $this->assertEquals(136, $result); // 28 + 35 + 42 + 31
@@ -288,7 +239,7 @@ class ItemsArrayTest extends TestCase
 
     public function testAverage()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->average('age');
         
         $this->assertEquals(34, $result); // 136 / 4
@@ -296,7 +247,7 @@ class ItemsArrayTest extends TestCase
 
     public function testMax()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->max('age');
         
         $this->assertEquals(42, $result);
@@ -304,7 +255,7 @@ class ItemsArrayTest extends TestCase
 
     public function testMin()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->min('age');
         
         $this->assertEquals(28, $result);
@@ -314,7 +265,7 @@ class ItemsArrayTest extends TestCase
 
     public function testCountBy()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->countBy('city');
         
         $this->assertEquals(2, $result['São Paulo']);
@@ -324,7 +275,7 @@ class ItemsArrayTest extends TestCase
 
     public function testSumBy()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $result = $items->sumBy('city', 'age');
         
         $this->assertEquals(70, $result['São Paulo']); // 28 + 42
@@ -340,7 +291,7 @@ class ItemsArrayTest extends TestCase
             ['id' => 1, 'name' => 'Alice'],
             ['id' => 2, 'name' => 'Bob'],
         ];
-        $result = (new ItemsArray($items))->keyValue('id', 'name');
+        $result = (new ItemBag($items))->keyValue('id', 'name');
         
         $this->assertEquals([1 => 'Alice', 2 => 'Bob'], $result);
     }
@@ -351,7 +302,7 @@ class ItemsArrayTest extends TestCase
             ['id' => 1, 'name' => 'Alice'],
             ['id' => 2, 'name' => 'Bob'],
         ];
-        $result = (new ItemsArray($items))->mapKeys(fn($key, $item) => $item['id']);
+        $result = (new ItemBag($items))->mapKeys(fn($key, $item) => $item['id']);
         
         $this->assertEquals([1 => $items[0], 2 => $items[1]], $result);
     }
@@ -367,7 +318,7 @@ class ItemsArrayTest extends TestCase
                 ]
             ]
         ];
-        $items = new ItemsArray([$data]);
+        $items = new ItemBag([$data]);
         $value = $items->get('0.user.profile.name');
         
         $this->assertEquals('Alice', $value);
@@ -376,51 +327,20 @@ class ItemsArrayTest extends TestCase
     public function testDotNotationSet()
     {
         $data = ['user' => ['name' => 'Bob']];
-        $items = new ItemsArray([$data]);
+        $items = new ItemBag([$data]);
         $items->set('0.user.city', 'São Paulo');
         
         $all = $items->all();
         $this->assertEquals('São Paulo', $all[0]['user']['city']);
     }
 
-    public function testDotNotationWith()
-    {
-        $data = ['user' => ['name' => 'Charlie']];
-        $items = new ItemsArray([$data]);
-        $result = $items->with('0.user.age', 42);
-        
-        $this->assertInstanceOf(ItemsArray::class, $result);
-        $all = $result->all();
-        $this->assertEquals(42, $all[0]['user']['age']);
-    }
+    
 
     // ===== Fluent Chaining Tests =====
 
-    public function testFluentChaining()
-    {
-        $result = (new ItemsArray($this->users))
-            ->filter(['active' => true])
-            ->sorted('age', 'asc')
-            ->mapped(fn($user) => ['name' => $user['name'], 'age' => $user['age']]);
-        
-        $all = $result->all();
-        $this->assertCount(3, $all); // Alice, Charlie, Diana (active users)
-        $this->assertEquals('Alice', $all[0]['name']); // Youngest active
-        $this->assertEquals(28, $all[0]['age']);
-    }
+    
 
-    public function testFluentChainingMixedMutable()
-    {
-        $items = new ItemsArray($this->users);
-        $result = $items
-            ->filter(['active' => true]) // Mutates $items
-            ->sorted('name', 'asc'); // Returns new sorted ItemsArray
-        
-        // $items should be filtered (mutated in-place)
-        $this->assertCount(3, $items);
-        // $result should be sorted
-        $this->assertEquals('Alice', $result->all()[0]['name']);
-    }
+    
 
     // ===== Static API Tests =====
 
@@ -460,19 +380,19 @@ class ItemsArrayTest extends TestCase
 
     public function testConstructorWithArray()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $this->assertCount(4, $items);
     }
 
     public function testConstructorEmpty()
     {
-        $items = new ItemsArray();
+        $items = new ItemBag();
         $this->assertCount(0, $items);
     }
 
     public function testToArray()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $array = $items->toArray();
         
         $this->assertEquals($this->users, $array);
@@ -480,7 +400,7 @@ class ItemsArrayTest extends TestCase
 
     public function testAll()
     {
-        $items = new ItemsArray($this->users);
+        $items = new ItemBag($this->users);
         $all = $items->all();
         
         $this->assertEquals($this->users, $all);

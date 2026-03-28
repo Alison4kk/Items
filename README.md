@@ -27,7 +27,7 @@ composer install
 require __DIR__ . '/vendor/autoload.php';
 
 use Items\Items;
-use Items\ItemsArray;
+use Items\ItemBag;
 
 $users = [
     ['id' => 1, 'name' => 'Alice', 'city' => 'São Paulo', 'age' => 28, 'active' => true],
@@ -41,11 +41,12 @@ $active = Items::filtered($users, ['active' => true]);
 // Static API - in-place
 Items::filter($users, ['city' => 'São Paulo']);
 
-// Fluent API - with chaining
-$result = (new ItemsArray($users))
+// Fluent API - in-place chaining
+$result = (new ItemBag($users))
     ->filter(['active' => true])
-    ->sorted('age', 'asc')
-    ->mapped(fn($u) => ['name' => $u['name'], 'age' => $u['age']]);
+    ->sort('age', 'asc')
+    ->map(fn($u) => ['name' => $u['name'], 'age' => $u['age']])
+    ->all();
 ```
 
 ## API Reference
@@ -62,14 +63,9 @@ Items::filtered(array $items, ...$conditions): array
 Items::filter(array &$items, ...$conditions): void
 ```
 
-**Fluent immutable:**
-```php
-$collection->filtered(...$conditions): ItemsArray
-```
-
 **Fluent in-place:**
 ```php
-$collection->filter(...$conditions): ItemsArray
+$collection->filter(...$conditions): ItemBag
 ```
 
 Returns array or instance with only items matching all conditions.
@@ -88,12 +84,10 @@ Items::sort(array &$items, string $field, string $direction = 'ASC'): void
 Items::sort(array &$items, callable $comparator): void
 ```
 
-**Fluent versions:**
+**Fluent in-place:**
 ```php
-$collection->sorted(string $field, string $direction = 'ASC'): ItemsArray
-$collection->sort(string $field, string $direction = 'ASC'): ItemsArray
-$collection->sorted(callable $comparator): ItemsArray
-$collection->sort(callable $comparator): ItemsArray
+$collection->sort(string $field, string $direction = 'ASC'): ItemBag
+$collection->sort(callable $comparator): ItemBag
 ```
 
 Supports 'ASC' and 'DESC' directions. Works with dot notation paths.
@@ -110,10 +104,9 @@ Items::mapped(array $items, callable $mapper): array
 Items::map(array &$items, callable $mapper): void
 ```
 
-**Fluent versions:**
+**Fluent in-place:**
 ```php
-$collection->mapped(callable $mapper): ItemsArray
-$collection->map(callable $mapper): ItemsArray
+$collection->map(callable $mapper): ItemBag
 ```
 
 Mapper receives `($item, $key)` and returns transformed value.
@@ -130,31 +123,64 @@ Items::uniqued(array $items, string|callable $key): array
 Items::unique(array &$items, string|callable $key): void
 ```
 
-**Fluent versions:**
+**Fluent in-place:**
 ```php
-$collection->uniqued(string|callable $key): ItemsArray
-$collection->unique(string|callable $key): ItemsArray
+$collection->unique(string|callable $key): ItemBag
 ```
 
 Removes duplicate items based on field or callable key.
 
-### Group (organize by field)
-
-```php
-Items::grouped(array $items, string|callable $key, ?string $subKey = null): array
-$collection->grouped(string|callable $key, ?string $subKey = null): array
-```
-
-Returns array of grouped items keyed by field values.
-
 ### Index (create indexed map)
 
+**Static immutable:**
 ```php
 Items::indexed(array $items, string|callable $key): array
-$collection->indexed(string|callable $key): array
 ```
 
-Returns associative array keyed by field or callable result.
+**Static in-place:**
+```php
+Items::index(array &$items, string|callable $key): void
+```
+
+**Fluent in-place:**
+```php
+$collection->index(string|callable $key): ItemBag
+```
+
+Changes array keys to values from a field or callable.
+
+### Group (organize by field)
+
+**Static immutable:**
+```php
+Items::grouped(array $items, string|callable $key, ?string $subKey = null): array
+```
+
+**Static in-place:**
+```php
+Items::group(array &$items, string|callable $key, ?string $subKey = null): void
+```
+
+**Fluent in-place:**
+```php
+$collection->group(string|callable $key, ?string $subKey = null): ItemBag
+```
+
+Reorganizes array into groups keyed by field values.
+
+### Column (extract column)
+
+**Static:**
+```php
+Items::column(array $items, string|callable $key): array
+```
+
+**Fluent:**
+```php
+$collection->column(string|callable $key): array
+```
+
+Extract values from a field or callable into a new array.
 
 ### Find (get first/last matching)
 
@@ -230,8 +256,8 @@ Items::setPath(&$item, string $path, $value): void
 **Fluent:**
 ```php
 $collection->get(string $path, $default = null): mixed
-$collection->set(string $path, $value): ItemsArray
-$collection->with(string $path, $value): ItemsArray
+$collection->set(string $path, $value): ItemBag
+$collection->with(string $path, $value): ItemBag
 ```
 
 Access nested arrays and objects using dot notation:
